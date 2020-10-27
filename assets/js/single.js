@@ -35,7 +35,7 @@ var getRepoIssues = function(repo) {
                 if (response.headers.get("Link")) {
                     displayWarning(repo);
                 }
-            });
+            })
         } else {
             // if not successful, redirect to homepage
             document.location.replace("./index.html");
@@ -91,5 +91,3 @@ var displayWarning = function(repo) {
     // append to warning container
     limitWarningEl.appendChild(linkEl);
 };
-
-getRepoName();

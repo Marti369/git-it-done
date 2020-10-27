@@ -5,6 +5,7 @@ var nameInputEl = document.querySelector("#username");
 //create two more variables to store data that will reference DOM elements
 var repoContainerEl = document.querySelector("#repos-container");
 var repoSearchTerm = document.querySelector("#repo-search-term");
+var languageButtonsEl = document.querySelector("#language-buttons");
 
 
 
@@ -51,11 +52,6 @@ var getUserRepos = function(user) {
         });
 };
 
-// fetch("https://api.github.com/users/octocat/repos").then(function(response) {
-//     response.json().then(function(data) {
-//         console.log(data);
-//     });
-// });
 
 //display repos function
 var displayRepos = function(repos, searchTerm) {
@@ -109,3 +105,31 @@ var displayRepos = function(repos, searchTerm) {
     }
 
 };
+
+var getFeaturedRepos = function(language) {
+    var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues";
+
+    fetch(apiUrl).then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+                displayRepos(data.items, language);
+            });
+        } else {
+            alert("Error: " + response.statusText);
+        }
+    });
+};
+
+
+var buttonClickHandler = function(event) {
+    var language = event.target.getAttribute("data-language");
+    if (language) {
+        getFeaturedRepos(language);
+
+        // clear old content
+        repoContainerEl.textContent = "";
+    }
+    console.log(language)
+};
+
+languageButtonsEl.addEventListener("click", buttonClickHandler);
